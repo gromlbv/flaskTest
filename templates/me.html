@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Профиль {{session['email']}}{% endblock %}
+{% block title %}Профиль{{me_email}}{% endblock %}
 
 {% block content %}
     <h1>Ваш аккаунт</h1>
@@ -8,17 +8,17 @@
     <div class="spacer4"></div>
 
     <div class="your-profile">
-        <img src="" alt="">
+        <img src="{{ url_for('static', filename='img/standart_pic.png') }}" alt="">
         <div class="profile-info">
-            <h3>{{session['email']}}</h3>
+            <h3>{{me_email}}</h3>
             <a href="{{ url_for('logout') }}">Взять юзернейм</a>
         </div>
     </div>
-
     
     <div class="spacer24"></div>
     <div class="spacer_line"></div>
     <div class="spacer24"></div>
+
     <h2>Кастомизация</h2>
     <form action="{{ url_for('set_border_radius') }}" method="POST" class="range-form">
         <label for="border-radius">Закругление углов</label>
@@ -39,7 +39,7 @@
     <a href="#" id="password_href">Сменить пароль</a>
     <div id="password_form" style="display: none;">
         <h2>Обновление пароля</h2>
-        <form action="change_password">
+        <form action="{{ url_for('change_password') }}" method="POST">
             <input type="password" name="old_password" placeholder="Старый пароль">
             <input type="password" name="new_password" placeholder="Новый пароль">
             <input type="submit" value="Сменить пароль">
