@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <h2>Войти в аккаунт</h2>
+    <form action="{{ url_for('login') }}" method="POST">  <!-- Указываем метод POST и маршрут -->
+        <input type="email" name="email" placeholder="your@mail.com" required>  <!-- Изменил на type="email" -->
+        <input type="password" name="password" placeholder="Ваш пароль" required>
+        <input type="submit" value="Войти в аккаунт">
+    </form>
+    <a href="{{ url_for('register') }}">Создать аккаунт</a>
+{% endblock content %}

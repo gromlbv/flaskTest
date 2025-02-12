@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}lbv_forum{% endblock title%}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div id="session-data" 
+        data-border-radius="{{ session.get('border-radius', 0) }}">
+    </div>
+    <script>
+        const borderRadius = document.getElementById('session-data').dataset.borderRadius;
+        document.documentElement.style.setProperty(
+            '--custom-border-radius', 
+            `${borderRadius}px`
+        );
+    </script>
+    <div class="wrapper">
+        <div class="header">
+            <a href="{{ url_for('feed') }}">Лента</a>
+            <a href="{{ url_for('feed') }}">Нейронка</a>
+            <div class="spacer"></div>
+            {% if 'email' in session %}
+                <a href="{{ url_for('login') }}">
+                    <img src="" alt="">
+                    Мой аккаунт</a>
+            {% else %}
+                <a href="{{ url_for('me') }}">Войти</a>
+            {% endif %}
+        </div>
+        <div class="content">
+            {% block content %} {% endblock content %}
+        </div>
+        
+        {% with messages = get_flashed_messages()%}
+            {% if messages %}
+                {% for message in messages%}
+                <div class="flash_message">
+                    <p>{{message}}</p>
+                </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+</body>
+</html>

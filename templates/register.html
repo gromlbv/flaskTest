@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <a href="{{ url_for('login') }}">Назад</a>
+    <h2>Создать аккаунт</h2>
+    <form action login>
+        <input type="email" name="email" placeholder="your@mail.com">
+        <input type="password" name="password" placeholder="Введите пароль">
+        <input type="text" name="two_password" placeholder="Повторите пароль">
+        <input type="submit" name="submit" value="Зарегистрироваться">
+    </form>
+    <a href="{{ url_for('register') }}">Создать аккаунт</a>
+
+{% endblock content %}

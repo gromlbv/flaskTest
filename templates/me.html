@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}Профиль {{session['email']}}{% endblock %}
+
+{% block content %}
+    <h1>Ваш аккаунт</h1>
+
+    <div class="spacer4"></div>
+
+    <div class="your-profile">
+        <img src="" alt="">
+        <div class="profile-info">
+            <h3>{{session['email']}}</h3>
+            <a href="{{ url_for('logout') }}">Взять юзернейм</a>
+        </div>
+    </div>
+
+    
+    <div class="spacer24"></div>
+    <div class="spacer_line"></div>
+    <div class="spacer24"></div>
+    <h2>Кастомизация</h2>
+    <form action="{{ url_for('set_border_radius') }}" method="POST" class="range-form">
+        <label for="border-radius">Закругление углов</label>
+        <div class="range-wrapper">
+            <span>0px</span>
+            <input type="range" id="border-radius" name="border-radius" value={{session.get('border-radius', 0)}} min="0" max="24">
+            <span>24px</span>
+        </div>
+        <input type="submit" value="Сохранить">
+        
+    </form>
+    <!-- <p>Текущее значение border-radius: {{ session.get('border-radius', 'не установлено') }}px</p> -->
+    <div class="spacer24"></div>
+    <div class="spacer_line"></div>
+    <div class="spacer24"></div>
+
+    <h2>Другое</h2>
+    <a href="#" id="password_href">Сменить пароль</a>
+    <div id="password_form" style="display: none;">
+        <h2>Обновление пароля</h2>
+        <form action="change_password">
+            <input type="password" name="old_password" placeholder="Старый пароль">
+            <input type="password" name="new_password" placeholder="Новый пароль">
+            <input type="submit" value="Сменить пароль">
+        </form>
+        <div class="spacer24"></div>
+    </div>
+    <a href="#" id="logout_href">Выйти из аккаунта</a>
+
+    <script>
+        const borderRadiusInput = document.getElementById('border-radius');
+        const root = document.documentElement;
+
+        // Обработчик изменения ползунка
+        borderRadiusInput.addEventListener('input', () => {
+            const value = borderRadiusInput.value;
+            root.style.setProperty('--custom-border-radius', `${value}px`);
+        });
+
+        const logoutBtn = document.getElementById('logout_href');
+        isLogout = false;
+
+        logoutBtn.addEventListener('click', (event) => {
+            if (isLogout == false){
+                event.preventDefault();
+            } else {
+                return
+            }
+            logoutBtn.innerHTML = "Вы уверены? Нажмите чтобы выйти из аккаунта";
+            logoutBtn.setAttribute('href', "{{ url_for('logout') }}");
+            isLogout = true;
+            setTimeout(() => {
+                logoutBtn.innerHTML = "Выйти из аккаунта";
+                logoutBtn.setAttribute('href', "#");
+            }, 3000);
+        });
+
+
+        const passwordBtn = document.getElementById('password_href');
+        const passwordForm = document.getElementById('password_form');
+        isChanging = false;
+
+        passwordBtn.addEventListener('click', (event) => {
+            event.preventDefault();
+            if (isChanging == false){
+                passwordForm.style.display = 'block';
+                passwordBtn.innerHTML = "Скрыть смену пароля";
+                isChanging = true;
+            } else {
+                passwordForm.style.display = 'none';
+                passwordBtn.innerHTML = "Сменить пароль";
+                isChanging = false;
+            }
+
+        })
+    </script> 
+{% endblock content %}
