@@ -27,6 +27,7 @@ def login():
         if token == None:
             return redirect(url_for('login'))
         else:
+            session['border-radius'] = 0
             session['token'] = token
 
 
@@ -49,6 +50,9 @@ def me():
     else:
         return redirect(url_for('login'))
 
+@app.route('/neural')
+def neural():
+    return render_template('neural.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -61,19 +65,24 @@ def register():
         return redirect(url_for('register'))
         
     if request.method == 'POST':
-        print('начал')
+        print('Создание - Запрос')
         email = request.form.get('email')
         password = request.form.get('password')
 
-        token = db.createAccount(email, password)
-        if token == None:
+        token = db.create_account(email, password)
+
+        if token == (False, None):
+            flash('Вы точно правильно написали почту?')
+            return redirect(url_for('register'))
+        elif token == (True, False):
+            flash('Проверьте написание пароля')
             return redirect(url_for('register'))
         else:
             session['token'] = token
 
 
         flash('Аккаунт успешно создан!')
-        return redirect(url_for('me'))
+        return redirect(url_for('login'))
     
     return render_template('register.html')
 
@@ -98,8 +107,12 @@ def logout():
 
 @app.route('/set_border_radius', methods=["POST"])
 def set_border_radius():
-    session['border-radius'] = request.form.get('border-radius')
-    flash('Теперь закругление еще круче!')
+    new_radius = request.form.get('border-radius')
+    if session['border-radius'] == new_radius:
+        flash('Вы ничего не поменяли...')
+    else:
+        session['border-radius'] = new_radius
+        flash('Теперь закругление еще круче!')
     return redirect(url_for('me'))
 
 @app.errorhandler(404)

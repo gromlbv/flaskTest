@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Профиль{{me_email}}{% endblock %}
+{% block title %}Профиль {{me_email}}{% endblock %}
 
 {% block content %}
     <h1>Ваш аккаунт</h1>
@@ -25,8 +25,27 @@
         <div class="range-wrapper">
             <span>0px</span>
             <input type="range" id="border-radius" name="border-radius" value={{session.get('border-radius', 0)}} min="0" max="24">
+            <div id="range-value">10px</div>
             <span>24px</span>
         </div>
+        <script>
+            const rangeInput = document.getElementById('border-radius');
+            const rangeValue = document.getElementById('range-value');
+            const value = rangeInput.value;
+            rangeValue.textContent = value + 'px';
+            const percentage = 0.27 + (value/1.75 - rangeInput.min) / (rangeInput.max - rangeInput.min);
+        
+            rangeValue.style.left = `calc(${percentage * 100}% - ${rangeValue.offsetWidth / 2}px)`; 
+
+            // Функция для обновления текста, который следует за ползунком
+            rangeInput.addEventListener('input', function () {
+                const value = rangeInput.value;
+                rangeValue.textContent = value + 'px';
+                const percentage = 0.27 + (value/1.75 - rangeInput.min) / (rangeInput.max - rangeInput.min);
+            
+                rangeValue.style.left = `calc(${percentage * 100}% - ${rangeValue.offsetWidth / 2}px)`; 
+            });
+        </script>
         <input type="submit" value="Сохранить">
         
     </form>
@@ -52,7 +71,6 @@
         const borderRadiusInput = document.getElementById('border-radius');
         const root = document.documentElement;
 
-        // Обработчик изменения ползунка
         borderRadiusInput.addEventListener('input', () => {
             const value = borderRadiusInput.value;
             root.style.setProperty('--custom-border-radius', `${value}px`);

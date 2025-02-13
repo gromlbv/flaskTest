@@ -1,6 +1,7 @@
 import sqlite3
 import myjwt
 import os
+import re
 
 currentdirectory = os.path.dirname(os.path.abspath(__file__))
 
@@ -21,13 +22,13 @@ def firstLaunch():
         )""")
         conn.commit()
 
-def createAccount(email, password):
+def DB_create_account(email, password):
     with get_db() as conn:
-        print('aaaaa')
         c = conn.cursor()
         c.execute("INSERT INTO users (email, username, password, creation_date) VALUES (?, ?, ?, ?)",
                   (email, None, password, '111'))
         conn.commit()
+        print('Создан аккаунт')
 
 def loginAccount(email, password):
     with get_db() as conn:
@@ -37,11 +38,11 @@ def loginAccount(email, password):
 
         if result and result[0] == password:
             token = myjwt.generate_jwt(email, result[1])
-            print('УСПЕШНО ВОШЕЛ')
+            print('Логин - Успешно вошел')
             print('JWT Token:', token)
             return token
         else:
-            print('не вышло')
+            print('Логин - Вход отклонен')
             return None
 
 def verifyToken(token):
@@ -50,10 +51,24 @@ def verifyToken(token):
         return decoded_token
     return None
 
+def create_account(email, password):
+    password_pattern = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$'
+    email_pattern = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+
+    if re.match(email_pattern, email) is None:
+        return(False, None)
+    
+    if re.match(password_pattern, password) is None:
+        return(True, False)
+    
+    DB_create_account(email=email, password=password)
+    return(True)
+
+
 
 # Пример использования
 # myemail = 'usernamegmail2'
 # mypassword = '1231232'
 
-# createAccount(myemail, mypassword)
+# create_account(myemail, mypassword)
 # token = loginAccount(myemail, mypassword)
