@@ -8,11 +8,9 @@
     <form action="{{ url_for('register') }}" method="POST">
         <input type="email" name="email" placeholder="your@mail.com">
         <input type="password" name="password" placeholder="Введите пароль">
-        <input type="text" placeholder="Повторите пароль">
+        <input type="password" placeholder="Повторите пароль">
         <input type="submit" name="submit" value="Зарегистрироваться">
     </form>
-    <a href="{{ url_for('register') }}">Создать аккаунт</a>
-
     
     <script>
         const form = document.getElementById('registerForm');

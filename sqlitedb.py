@@ -1,12 +1,11 @@
 import sqlite3
 import myjwt
 import os
-import re
+import re, time, datetime
 
 currentdirectory = os.path.dirname(os.path.abspath(__file__))
 
 def get_db():
-    # Создаем соединение с базой данных
     conn = sqlite3.connect('lbvforum.db')
     conn.row_factory = sqlite3.Row
     return conn
@@ -22,7 +21,7 @@ def firstLaunch():
         )""")
         conn.commit()
 
-def DB_create_account(email, password):
+def db_create_account(email, password):
     with get_db() as conn:
         c = conn.cursor()
         c.execute("INSERT INTO users (email, username, password, creation_date) VALUES (?, ?, ?, ?)",
@@ -61,10 +60,52 @@ def create_account(email, password):
     if re.match(password_pattern, password) is None:
         return(True, False)
     
-    DB_create_account(email=email, password=password)
+    db_create_account(email=email, password=password)
     return(True)
 
+def create_thread(name, author):
+    with get_db() as conn:
+        c = conn.cursor()
+        current_time = int(time.time())
+        c.execute("INSERT INTO threads (name, author, last_activity, creation_date) VALUES (?, ?, ?, ?)",
+                  (name, author, current_time, current_time))
+        conn.commit()
 
+import datetime
+
+import datetime
+
+def parse_threads():
+    with get_db() as conn:
+        c = conn.cursor()
+        c.execute("""SELECT threads.*, users.email FROM threads
+                     JOIN users ON threads.author = users.rowid""")
+        all_threads = c.fetchall()
+
+        # Преобразуем строки Row в словари и изменим дату
+        threads_with_dates = []
+        for thread in all_threads:
+            thread_dict = dict(thread)
+            thread_dict['creation_date'] = datetime.datetime.fromtimestamp(thread_dict['creation_date']).strftime('%H:%M')
+            threads_with_dates.append(thread_dict)
+        
+        threads_with_dates.reverse()
+        
+        return threads_with_dates
+
+
+def get_userid(email):
+    with get_db() as conn:
+        c = conn.cursor()
+        c.execute("SELECT rowid FROM users WHERE email = ?", (email,)) 
+        userid = c.fetchone()
+        if userid:
+            return userid[0]  # возвращаем первый элемент из кортежа
+        return None
+
+
+# print(create_thread('test', 'testauthor'))
+# print(parse_threads())
 
 # Пример использования
 # myemail = 'usernamegmail2'

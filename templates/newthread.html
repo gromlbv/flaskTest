@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}404 Ошибка{% endblock %}
+
+{% block content %}
+    <a href="{{ url_for('feed') }}">Вернуться назад</a>
+    <h1>Создание новой темы</h1>
+
+    <div class="spacer4"></div>
+    <div class="spacer_line"></div>
+    <div class="spacer24"></div>
+
+    <!-- <h2>Содержание</h2> -->
+    <form method="POST">
+        <label for="name">Название темы</label>
+        <input type="text" placeholder="Опишите вашу тему" name="name">
+        <input type="submit" value="Создать">
+    </form>
+{% endblock content %}

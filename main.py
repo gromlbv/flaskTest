@@ -10,7 +10,8 @@ def redirect_feed():
 
 @app.route('/feed')
 def feed():
-    return render_template('feed.html')
+    all_threads = db.parse_threads()
+    return render_template('feed.html', all_threads=all_threads)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -39,7 +40,7 @@ def login():
 @app.route('/me')
 def me():
     if 'token' in session:
-        decoded_token = db.verifyToken(session['token'])  # Проверка токена
+        decoded_token = db.verifyToken(session['token'])
         if decoded_token:
             email = decoded_token.get('email')
             username = decoded_token.get('username')
@@ -120,7 +121,22 @@ def set_border_radius():
 def error404(e):
     return render_template('404.html')
 
+@app.route('/new', methods=['POST', 'GET'])
+def new_thread():
+    if 'token' in session:
+        decoded_token = db.verifyToken(session['token'])
+        if decoded_token:
+            if request.method == 'POST':
+                userid = db.get_userid(decoded_token.get('email'))
+                print('Создание - Успешно', userid)
+                db.create_thread(request.form.get('name'), userid)
+                return redirect(url_for('feed'))
+            return render_template('newthread.html')
+        
+    flash('Сначала войдите в аккаунт')
+    return redirect(url_for('feed'))
+    
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=8000)

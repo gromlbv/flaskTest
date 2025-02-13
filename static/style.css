@@ -1,5 +1,5 @@
 *{
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-family: 'Gill Sans', sans-serif;
     /* font-family: "Cabin", serif; */
     transition: 0.1s;
 }
@@ -169,7 +169,7 @@ input[type="range"]::-webkit-slider-thumb {
         height: 18px;
         margin-right: 8px;
         background-color: #ffffff36;
-        border-radius: 50%;
+        border-radius: calc(var(--custom-border-radius)*0.4);
     }
 
     a:first-child{
@@ -228,9 +228,10 @@ a:hover{
     height: 1px;
     width: 100%;
 }
-button {
+button, a.button-like {
     cursor: pointer;
     border-radius: var(--custom-border-radius);
+
 
     &.black {
         background-color: #000;
@@ -258,6 +259,19 @@ button {
     &:hover {
         opacity: 0.6;
     }
+
+    &.button-like{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 !important;
+        text-align: center;
+    }
+}
+.recent-themes{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 .theme-home{
     display: flex;
