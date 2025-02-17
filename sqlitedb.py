@@ -70,11 +70,7 @@ def create_thread(name, author):
         c.execute("INSERT INTO threads (name, author, last_activity, creation_date) VALUES (?, ?, ?, ?)",
                   (name, author, current_time, current_time))
         conn.commit()
-
-import datetime
-
-import datetime
-
+        
 def parse_threads():
     with get_db() as conn:
         c = conn.cursor()

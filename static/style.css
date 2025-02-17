@@ -325,6 +325,7 @@ button, a.button-like {
     color: #000;
     background-color: #fff;
     border: 1px solid #0000003d;
+    border-radius: var(--custom-border-radius);
 }
 
 .your-profile{

@@ -8,7 +8,11 @@
     <form action="{{ url_for('register') }}" method="POST">
         <input type="email" name="email" placeholder="your@mail.com">
         <input type="password" name="password" placeholder="Введите пароль">
-        <input type="password" placeholder="Повторите пароль">
+        <input type="password" placeholder="Повторите пароль">  
+        <div class="spacer4"></div>
+        <label for="password">Пароль >= 8 символов</label>
+        <label for="password">Должна быть 1 заглавная и 1 маленькая буква</label>
+        <div class="spacer4"></div>
         <input type="submit" name="submit" value="Зарегистрироваться">
     </form>
     

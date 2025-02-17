@@ -19,6 +19,9 @@ def login():
         decoded_token = db.verifyToken(session['token'])
         if decoded_token:
             return redirect(url_for('me'))
+        print()
+
+
     if request.method == 'POST':
         print('начал')
         email = request.form.get('email')
