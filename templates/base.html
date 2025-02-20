@@ -23,11 +23,25 @@
     <div class="wrapper">
         <div class="header">
             <a href="{{ url_for('feed') }}">Лента</a>
-            <a href="{{ url_for('neural') }}">Нейронка</a>
+            <a href="{{ url_for('graphiti') }}">Графити</a>
+            <!-- <a href="{{ url_for('indev') }}">.png</a> -->
+
+            <!-- <a href="{{ url_for('indev') }}">Нейронка</a> -->
             <div class="spacer"></div>
+            <a class="btn" href="{{ url_for('new_thread') }}">
+                <img src="{{ url_for('static', filename='icons/plus.svg') }}" alt="+">
+            </a>
+            <a class="btn" href="{{ url_for('indev') }}">
+                <img src="{{ url_for('static', filename='icons/search.svg') }}" alt="Поиск">
+            </a>
+
+            <div class="spacer4_h"></div>
+            <div class="spacer_line_h"></div>
+            <div class="spacer4_h"></div>
+
             {% if 'token' in session %}
-                <a href="{{ url_for('login') }}">
-                    <img src="{{ url_for('static', filename='img/standart_pic.png') }}" alt=" ">
+                <a href="{{ url_for('me') }}">
+                    <img class="profile-img" src="{{ url_for('static', filename='img/standart_pic.png') }}" alt=" ">
                     Мой аккаунт</a>
             {% else %}
                 <a href="{{ url_for('me') }}">Войти</a>

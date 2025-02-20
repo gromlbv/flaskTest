@@ -7,7 +7,9 @@
 :root {
     --custom-border-radius: var(0px);
 }
-
+body{
+    overflow: hidden;
+}
 h1, h2, h3, h4, h5{
     margin: 12px 0;
     padding: 0;
@@ -163,8 +165,15 @@ input[type="range"]::-webkit-slider-thumb {
 
         color: white;
     }
-
-    a img{
+    a.btn{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        padding: 0;
+        align-items: center;
+    }
+    a .profile-img{
         width: 18px;
         height: 18px;
         margin-right: 8px;
@@ -224,14 +233,26 @@ a:hover{
     height: 24px;
     width: 100%;
 }
+.spacer24_h{
+    height: 100%;
+    width: 24px;
+}
 .spacer4{
     height: 1px;
     width: 100%;
 }
+.spacer4_h{
+    height: 100%;
+    width: 4px;
+}
+.spacer_line_h{
+    width: 1px;
+    height: 34px;
+    background-color: #ffffff2d;
+}
 button, a.button-like {
     cursor: pointer;
     border-radius: var(--custom-border-radius);
-
 
     &.black {
         background-color: #000;
@@ -240,6 +261,7 @@ button, a.button-like {
     }
 
     &.outline {
+        color: #000;
         background-color: white;
         border: 1px solid #0000003d;
         font-size: 16px;
@@ -268,6 +290,7 @@ button, a.button-like {
         text-align: center;
     }
 }
+
 .recent-themes{
     display: flex;
     flex-direction: column;
@@ -343,5 +366,43 @@ button, a.button-like {
     }
     h3{
         margin: 2px 0;
+    }
+}
+
+
+.graphiti-wrapper{
+    canvas{
+        border: dashed 3px #0000002d;
+        background-color: #0000000d;
+        border-radius: var(--custom-border-radius);
+    }
+    .paint-tools{
+        padding: 0 12px;
+        display: flex;
+        flex-direction: row;
+    }
+    button{
+        width: 42px;
+        height: 42px;
+
+        border-radius: calc(var(--custom-border-radius)*1.5);
+    }
+}
+.bottom-btn{
+    padding: 0 12px;
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    height: 42px;
+
+    button{
+        width: 100%;
+    }
+    form{
+        width: 100%;
+        input{
+            flex-grow: 1;
+            padding: 0;
+        }
     }
 }

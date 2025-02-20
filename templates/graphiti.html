@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <a class="button-like new-theme outline grow" href="{{ url_for('new_graphiti') }}">Новый графити</a>
+    <div class="recent-themes">
+        <h3>Недавние темы</h3>
+        {% for threads in all_threads %}
+            <div class="theme-home">
+                <div class="theme-left">
+                    <h4>{{ threads['name'] }}</h4>
+                    <p>{{ threads['email'] }}</p>
+                </div>
+                <div class="theme-right">
+                    Активно {{ threads['creation_date'] }}
+                    <button class="outline">Ответить</button>
+                </div>
+            </div>
+        {% endfor %}
+        <!-- <div class="theme-home">
+            <div class="theme-left">
+                <h4>Боба Фетт Имхо Сигма Боба Фетт Имхо Сигма</h4>
+                <p>gromlbv#3214</p>
+            </div>
+            <div class="theme-right">
+                Активно 12 минут назад
+                <button class="outline">Ответить</button>
+            </div>
+        </div> -->
+    </div>
+{% endblock content %}

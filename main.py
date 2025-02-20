@@ -13,6 +13,7 @@ def feed():
     all_threads = db.parse_threads()
     return render_template('feed.html', all_threads=all_threads)
 
+# Аккаунт
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if 'token' in session:
@@ -38,25 +39,23 @@ def login():
         flash('Вы успешно вошли в аккаунт', 'successful')
         return redirect(url_for('me'))
     
+    session.pop('token', None)
     return render_template('login.html')
 
 @app.route('/me')
 def me():
-    if 'token' in session:
-        decoded_token = db.verifyToken(session['token'])
-        if decoded_token:
-            email = decoded_token.get('email')
-            username = decoded_token.get('username')
-            return render_template('me.html', me_email=email, me_username=username)
-        else:
-            flash('Неверный или истекший токен', 'error')
-            return redirect(url_for('login'))
-    else:
+    if not 'token' in session:
         return redirect(url_for('login'))
+        
+    decoded_token = db.verifyToken(session['token'])
+    if not decoded_token:
+        flash('Закончилось время сеанса')
+        return redirect(url_for('login'))
+    
+    email = decoded_token.get('email')
+    username = decoded_token.get('username')
+    return render_template('me.html', me_email=email, me_username=username)
 
-@app.route('/neural')
-def neural():
-    return render_template('neural.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -124,22 +123,51 @@ def set_border_radius():
 def error404(e):
     return render_template('404.html')
 
-@app.route('/new', methods=['POST', 'GET'])
-def new_thread():
-    if 'token' in session:
-        decoded_token = db.verifyToken(session['token'])
-        if decoded_token:
-            if request.method == 'POST':
-                userid = db.get_userid(decoded_token.get('email'))
-                print('Создание - Успешно', userid)
-                db.create_thread(request.form.get('name'), userid)
-                return redirect(url_for('feed'))
-            return render_template('newthread.html')
+@app.route('/new_graphiti', methods=['POST', 'GET'])
+def new_graphiti():
+    if not 'token' in session:
+        flash('Сначала войдите в аккаунт')
+        return redirect(url_for('feed'))
         
-    flash('Сначала войдите в аккаунт')
-    return redirect(url_for('feed'))
+    decoded_token = db.verifyToken(session['token'])
+    if not decoded_token:
+        flash('Закончилось время сеанса')
+        return redirect(url_for('login'))
+ 
+    return render_template('new_graphiti.html')
+
+@app.route('/graphiti', methods=['POST', 'GET'])
+def graphiti():
+    all_threads = db.parse_threads()
+    return render_template('graphiti.html', all_threads=all_threads)
     
 
+@app.route('/new_thread', methods=['POST', 'GET'])
+def new_thread():
+    if not 'token' in session:
+        flash('Сначала войдите в аккаунт')
+        return redirect(url_for('feed'))
+        
+    decoded_token = db.verifyToken(session['token'])
+    if not decoded_token:
+        flash('Закончилось время сеанса')
+        return redirect(url_for('login'))
+ 
+    if request.method == 'POST':
+        userid = db.get_userid(decoded_token.get('email'))
+        print('Создание - Успешно', userid)
+        db.create_thread(request.form.get('name'), userid)
+
+        flash('Новая тема выложена! Перезагрузите страницу если не увидели сразу', 'successful')
+        return redirect(url_for('feed'))
+    return render_template('newthread.html')
+        
+
+    
+
+@app.route('/neural')
+def indev():
+    return render_template('indev.html')
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=8000)

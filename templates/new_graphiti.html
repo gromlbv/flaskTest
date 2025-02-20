@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}В разработке...{% endblock %}
+
+{% block content %}
+	<div class="graphiti-wrapper">
+		<canvas id="canvas"></canvas>
+		<div class="paint-tools">
+			<input type="range" id="brush-size" min="1" max="50" value="5">
+			<input type="color" id="color-picker">
+			<button class="outline" id="pen">Pen</button>
+			<button class="outline" id="eraser"><img src="{{ url_for('static', filename='icons/eraser.svg') }}" alt=""></button>
+		</div>
+	</div>
+	<script src="./script.js"></script>
+    <div class="bottom-btn">
+        <button class="outline" id="clear-canvas">Очистить</button>
+        <form action="{{ url_for('change_password') }}" method="POST">
+            <input type="submit" value="Далее">
+        </form>
+    </div>
+    
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const brushSize = document.getElementById('brush-size');
+        const colorPicker = document.getElementById('color-picker');
+        const clearCanvas = document.getElementById('clear-canvas');
+        let isDrawing = false;
+
+        // Adjust canvas size
+        function resizeCanvas() {
+            canvas.width = window.innerWidth - 60;
+            canvas.height = window.innerHeight * 0.7;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        ctx.lineWidth = 5;
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = 'black';
+
+        function startPosition(e) {
+            isDrawing = true;
+            draw(e);
+        }
+
+        function endPosition() {
+            isDrawing = false;
+            ctx.beginPath();
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+
+            let x, y;
+            if (e.touches) {
+                x = e.touches[0].clientX - canvas.offsetLeft;
+                y = e.touches[0].clientY - canvas.offsetTop;
+            } else {
+                x = e.clientX - canvas.offsetLeft;
+                y = e.clientY - canvas.offsetTop;
+            }
+
+            ctx.strokeStyle = colorPicker.value;
+            ctx.lineWidth = brushSize.value;
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+
+        // Mouse events
+        canvas.addEventListener('mousedown', startPosition);
+        canvas.addEventListener('mouseup', endPosition);
+        canvas.addEventListener('mousemove', draw);
+
+        // Touch events
+        canvas.addEventListener('touchstart', startPosition);
+        canvas.addEventListener('touchend', endPosition);
+        canvas.addEventListener('touchmove', draw);
+
+        clearCanvas.addEventListener('click', () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        });
+
+        brushSize.addEventListener('input', () => {
+            ctx.lineWidth = brushSize.value;
+            updateBrushSizeLabel(brushSize.value);
+        });
+
+        function updateBrushSizeLabel(size) {
+            const brushSizeLabel = document.getElementById('brush-size-label');
+            if (brushSizeLabel) {
+                brushSizeLabel.textContent = `Brush Size: ${size}`;
+            }
+        }
+
+        const penButton = document.getElementById('pen');
+        const eraserButton = document.getElementById('eraser');
+
+        function activatePen() {
+            ctx.globalCompositeOperation = 'source-over';
+            ctx.strokeStyle = colorPicker.value;
+        }
+
+        function activateEraser() {
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0)';
+        }
+
+        penButton.addEventListener('click', activatePen);
+        eraserButton.addEventListener('click', activateEraser);
+
+    </script>
+{% endblock content %}
