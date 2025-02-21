@@ -12,10 +12,12 @@
                 <input type="range" id="brush-size" min="1" max="50" value="5">
             </div>
             <div class="paint-color">
-                <button class="outline" id="pen">Pen</button>
-                <button class="outline" id="eraser"><img src="{{ url_for('static', filename='icons/eraser.svg') }}" alt=""></button>
+                <button class="outline" id="pen"><img src="{{ url_for('static', filename='icons/pen-active.svg') }}" alt="">
+                </button>
+                <button class="outline" id="eraser">
+                    <img src="{{ url_for('static', filename='icons/eraser.svg') }}" alt="">
+                </button>
             </div>
-			
 		</div>
 	</div>
     <div class="bottom-btn">
@@ -24,6 +26,13 @@
             <input type="submit" value="Далее">
         </form>
     </div>
+
+    <!-- Элемент для отображения обводки курсора -->
+    <div id="cursor-outline"></div>
+    
+    <style>
+
+    </style>
     
     <script>
         const canvas = document.getElementById('canvas');
@@ -31,11 +40,12 @@
         const brushSize = document.getElementById('brush-size');
         const colorPicker = document.getElementById('color-picker');
         const clearCanvas = document.getElementById('clear-canvas');
+        const cursorOutline = document.getElementById('cursor-outline');
         let isDrawing = false;
 
         // Adjust canvas size
         function resizeCanvas() {
-            canvas.width = window.innerWidth - 60;
+            canvas.width = window.innerWidth - 350;
             canvas.height = window.innerHeight * 0.7;
         }
         resizeCanvas();
@@ -78,12 +88,18 @@
         // Mouse events
         canvas.addEventListener('mousedown', startPosition);
         canvas.addEventListener('mouseup', endPosition);
-        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mousemove', (e) => {
+            draw(e);
+            updateCursorOutline(e);
+        });
 
         // Touch events
         canvas.addEventListener('touchstart', startPosition);
         canvas.addEventListener('touchend', endPosition);
-        canvas.addEventListener('touchmove', draw);
+        canvas.addEventListener('touchmove', (e) => {
+            draw(e);
+            updateCursorOutline(e);
+        });
 
         clearCanvas.addEventListener('click', () => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -119,5 +135,33 @@
         penButton.addEventListener('click', activatePen);
         eraserButton.addEventListener('click', activateEraser);
 
+        // Функция для обновления обводки курсора
+        function updateCursorOutline(e) {
+            let x, y;
+            if (e.touches) {
+                x = e.touches[0].clientX;
+                y = e.touches[0].clientY;
+            } else {
+                x = e.clientX;
+                y = e.clientY;
+            }
+
+            cursorOutline.style.display = 'block';
+            cursorOutline.style.left = `${x}px`;
+            cursorOutline.style.top = `${y}px`;
+            cursorOutline.style.width = `${brushSize.value}px`;
+            cursorOutline.style.height = `${brushSize.value}px`;
+            cursorOutline.style.border = `2px solid ${colorPicker.value}`;
+        }
+
+        // Скрываем обводку при выходе за пределы canvas
+        canvas.addEventListener('mouseleave', () => {
+            cursorOutline.style.display = 'none';
+        });
+
+        canvas.addEventListener('mouseenter', (e) => {
+            cursorOutline.style.display = 'block';
+            updateCursorOutline(e);
+        });
     </script>
 {% endblock content %}

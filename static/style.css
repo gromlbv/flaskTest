@@ -176,7 +176,7 @@ input[type="range"]::-webkit-slider-thumb {
     border-radius: var(--custom-border-radius);
     color: white;
 
-    a{
+    a, button{
         display: flex;
         align-items: center;
         height: 100%;
@@ -186,7 +186,7 @@ input[type="range"]::-webkit-slider-thumb {
 
         color: white;
     }
-    a.btn{
+    .btn{
         display: flex;
         align-items: center;
         justify-content: center;
@@ -201,6 +201,7 @@ input[type="range"]::-webkit-slider-thumb {
         background-color: #ffffff36;
         border-radius: calc(var(--custom-border-radius)*0.4);
     }
+    
 
     a:first-child{
         padding: 0 12px 0 18px;
@@ -213,11 +214,25 @@ input[type="range"]::-webkit-slider-thumb {
         background-color: #313131;
         opacity: 0.5;
     }
+    .btn.popup_action{
+        position: relative;
+        a{
+            position: absolute;
+            color: black;
+            top:65px
+        }
+    }
 }
-
+body{
+    display: flex;
+    justify-content: center;
+}
+.wrapper{
+    max-width: 900px;
+    width: 100%;
+}
 .content{
     margin: 12px;
-
 }
 form{
     display: flex;
@@ -225,6 +240,7 @@ form{
     gap: 8px;
     max-width: 350px;
 }
+
 a{
     display: flex;
     
@@ -396,6 +412,8 @@ button, a.button-like {
         border: dashed 3px #0000002d;
         background-color: #0000000d;
         border-radius: var(--custom-border-radius);
+
+        cursor: none;
     }
     #brush-size{
         /* position: relative;
@@ -425,6 +443,7 @@ button, a.button-like {
         display: flex;
         flex-direction: row;
     }
+
     #color-picker{
         -webkit-appearance: none;
         -moz-appearance: none;
@@ -466,6 +485,19 @@ button, a.button-like {
         border-radius: calc(var(--custom-border-radius)*1.5);
     }
 }
+#cursor-outline {
+    transition: 0s !important;
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border: 2px solid #00000036;
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    display: none;
+}
+
+
 .bottom-btn{
     padding: 0 12px;
     display: flex;
