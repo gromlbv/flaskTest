@@ -26,11 +26,18 @@ def new_graphiti():
  
     return render_template('new_graphiti.html')
 
+@app.route('/new_graphiti/areyousure')
+def approve_graphiti():
+    return render_template('approve_graphiti.html')
+
+
 @app.route('/graphiti', methods=['POST', 'GET'])
 def graphiti():
     all_threads = db.parse_threads()
     return render_template('graphiti.html', all_threads=all_threads)
     
+
+
 
 @app.route('/new_thread', methods=['POST', 'GET'])
 def new_thread():

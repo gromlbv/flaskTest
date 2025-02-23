@@ -3,54 +3,12 @@
 {% block title %}Новое графити{% endblock %}
 
 {% block content %}
-    <div class="paint-wrapper">
-        <div class="graphiti-header">
-            <h3>Создание графити</h3>
-            <a href="{{ url_for('graphiti') }}">Вернуться в ленту</a>
-        </div>
-        <div class="graphiti-wrapper">
-            <div class="tools-left flex-column flex-between">
-                <button class="outline" id="undo">
-                    <img src="{{ url_for('static', filename='icons/undo.svg') }}" alt="">
-                </button>
-                <div class="paint-brush flex-column">
-                    <input type="color" id="color-picker">
-                    <div class="tool-range">
-                        <input type="range" id="brush-size" min="1" max="50" value="5">
-                    </div>
-                </div>
-            </div>
-            <canvas id="canvas"></canvas>
-            
-            <div class="tools-right flex-column flex-between">
-                <button class="outline" id="redo">
-                    <img src="{{ url_for('static', filename='icons/redo.svg') }}" alt="">
-                </button>
-                <div class="paint-tools flex-column">
-                    <button class="outline" id="pen">
-                        <img src="{{ url_for('static', filename='icons/pen-active.svg') }}" alt="">
-                    </button>
-                    <button class="outline" id="eraser">
-                        <img src="{{ url_for('static', filename='icons/eraser.svg') }}" alt="">
-                    </button>
-                </div>
-            </div>
-
-            </div>
-
-        </div>
-    </div>
     <div class="bottom-btn">
         <button class="outline" id="clear-canvas">Очистить</button>
         <button class="black" id="save-img">Далее</button>
     </div>
 
-    <!-- Элемент для отображения обводки курсора -->
     <div id="cursor-outline"></div>
-    
-    <style>
-
-    </style>
     
     <script>
         const canvas = document.getElementById('canvas');
@@ -66,7 +24,7 @@
             
             // Устанавливаем ширину и высоту одинаковыми, чтобы canvas оставался квадратным
             const size = canvasWrapper.offsetWidth;
-            canvas.width = '100%'1;
+            canvas.width = size;
             canvas.height = size;
         }
         resizeCanvas();

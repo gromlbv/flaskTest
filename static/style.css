@@ -13,6 +13,9 @@ h1, h2, h3, h4, h5{
     margin: 12px 0;
     padding: 0;
 }
+a{
+    text-decoration: none;
+}
 input{
     font-size: 18px;
 
@@ -176,7 +179,10 @@ input[type="range"]::-webkit-slider-thumb {
     border-radius: var(--custom-border-radius);
     color: white;
 
-    a, button{
+    /* button:hover{
+        filter: invert(0.8);
+    } */
+    .link{
         display: flex;
         align-items: center;
         height: 100%;
@@ -184,17 +190,13 @@ input[type="range"]::-webkit-slider-thumb {
         text-decoration: none !important;
         border-radius: var(--custom-border-radius);
 
+        background-color: transparent;
+        border: none;
+
         color: white;
     }
-    .btn{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        padding: 0;
-        align-items: center;
-    }
-    a .profile-img{
+
+    .link .profile-img{
         width: 18px;
         height: 18px;
         margin-right: 8px;
@@ -203,16 +205,25 @@ input[type="range"]::-webkit-slider-thumb {
     }
     
 
-    a:first-child{
+    .link:first-child{
         padding: 0 12px 0 18px;
     }
-    a:last-child{
+    .link:last-child{
         padding: 0 18px 0 12px;
     }
 
     a:hover{
         background-color: #313131;
         opacity: 0.5;
+    }
+
+    .btn{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        padding: 0;
+        align-items: center;
     }
     .btn.popup_action{
         position: relative;
@@ -222,6 +233,7 @@ input[type="range"]::-webkit-slider-thumb {
             top:65px
         }
     }
+    
 }
 body{
     display: flex;
@@ -292,6 +304,7 @@ button, a.button-like {
     border-radius: var(--custom-border-radius);
 
     &.black {
+        color: white;
         background-color: #000;
         border: 1px solid #0000003d;
         font-size: 16px;
@@ -406,44 +419,94 @@ button, a.button-like {
     }
 }
 
+.paint-wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 24px;
+}
+.flex-between{
+    display: flex;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+.flex-column{
+    display: flex;
+    flex-direction: column;
+}
+
+
+.graphiti-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 460px;
+    margin: 0 24px 12px 24px;
+
+    a{
+        padding-right: 0;
+    }
+}
 
 .graphiti-wrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    max-width: 460px;
+
+    .flex-column{
+        gap: 8px;
+    }
     canvas{
+        width: calc(100% - 6px); /* Canvas занимает всю ширину блока */
+        display: block; /* Убираем лишние отступы */
         border: dashed 3px #0000002d;
         background-color: #0000000d;
         border-radius: var(--custom-border-radius);
 
         cursor: none;
     }
-    #brush-size{
-        /* position: relative;
-        bottom: 170px;
-        left: -50px; */
-        /* transform: rotate(270deg); */
 
-        max-height: 45px;
-        height: 45px;
-        padding: 0;
-        margin: 0;
-    }
     #pen{
         background-color: #000;
         color: white;
     }
-    .paint-color{
+
+    .paint-brush {
         display: flex;
-        flex-direction: row;
-        gap: 6px;
-    }
-    .paint-tools{
-        display: flex;
-        flex-direction: row;
+        flex-direction: column;
+        align-items: flex-start;
         justify-content: space-between;
-        padding: 0 12px;
-        display: flex;
-        flex-direction: row;
+        width: 45px;
     }
 
+    .tool-range{
+        position: relative;
+        height: 135px;
+        width: 45px;
+    }
+    #brush-size {
+        position: absolute;
+        top: 135px;
+        height: 45px;
+        width: calc( 135px - 24px);
+        padding: 0 12px;
+        rotate: 270deg;
+        transform-origin: left top;
+        margin: 0;
+        
+    }
+    #brush-size::-webkit-slider-thumb {
+        appearance: none;
+        width: 42px;
+        height: 24px;
+        margin-top: -10%;
+    }
     #color-picker{
         -webkit-appearance: none;
         -moz-appearance: none;
@@ -459,7 +522,6 @@ button, a.button-like {
         border: none;
 
         cursor: pointer;
-
     }
     #color-picker::-webkit-color-swatch {
         border-radius: var(--custom-border-radius);
@@ -485,6 +547,7 @@ button, a.button-like {
         border-radius: calc(var(--custom-border-radius)*1.5);
     }
 }
+
 #cursor-outline {
     transition: 0s !important;
     position: absolute;
