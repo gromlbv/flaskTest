@@ -167,6 +167,16 @@ input[type="range"]::-webkit-slider-thumb {
     }
 
 }
+.display_none{
+    display: none !important;
+}
+.remove_maxwidth{
+    width: auto !important;
+}
+#add_popup{
+    display: flex;
+    background-color: red;
+}
 .header{
     display: flex;
     align-items: center;

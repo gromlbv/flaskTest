@@ -28,14 +28,19 @@
             <!-- <a href="{{ url_for('indev') }}">Нейронка</a> -->
             <div class="spacer"></div>
 
-            <a class="link btn" href="{{ url_for('indev') }}">
+            <a id="search" class="link btn" href="{{ url_for('indev') }}">
                 <img src="{{ url_for('static', filename='icons/search.svg') }}" alt="Поиск">
             </a>
-            <button class="link btn" class="btn popup_action">
+            <button class="link btn" id="show_add_popup" class="btn popup_action">
                 <img src="{{ url_for('static', filename='icons/plus.svg') }}" alt="+">
-                <!-- <a class="btn popup_action" href="{{ url_for('new_thread') }}">
-                    <div>Текст</div>
-                </a> -->
+                <div id="add_popup" class="display_none">
+                    <a class="btn popup_action" href="{{ url_for('new_thread') }}">
+                        <img src="{{ url_for('static', filename='icons/plus.svg') }}" alt="+">
+                    </a>
+                    <a class="btn popup_action" href="{{ url_for('new_graphiti') }}">
+                        <img src="{{ url_for('static', filename='icons/plus.svg') }}" alt="+">
+                    </a>
+                </div>
             </button>
             
             <div class="spacer4_h"></div>
@@ -71,6 +76,15 @@
                 setTimeout(() => {
                     flash_message.classList.add('opacity0');
                 }, 2000);
+            }
+
+            show_add_popup = document.getElementById('show_add_popup');
+            add_popup = document.getElementById('add_popup');
+            search = document.getElementById('search');
+
+            show_add_popup.onclick = () => {
+                add_popup.classList.toggle('display_none');
+                show_add_popup.classList.toggle('remove_maxwidth');
             }
         </script>
     </div>
