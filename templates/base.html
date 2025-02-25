@@ -32,13 +32,13 @@
                 <img src="{{ url_for('static', filename='icons/search.svg') }}" alt="Поиск">
             </a>
             <button class="link btn" id="show_add_popup" class="btn popup_action">
-                <img src="{{ url_for('static', filename='icons/plus.svg') }}" alt="+">
+                <img id="show_img" src="{{ url_for('static', filename='icons/plus.svg') }}" alt="+">
                 <div id="add_popup" class="display_none">
                     <a class="btn popup_action" href="{{ url_for('new_thread') }}">
-                        <img src="{{ url_for('static', filename='icons/plus.svg') }}" alt="+">
+                        Новая тема
                     </a>
                     <a class="btn popup_action" href="{{ url_for('new_graphiti') }}">
-                        <img src="{{ url_for('static', filename='icons/plus.svg') }}" alt="+">
+                        Создать графити
                     </a>
                 </div>
             </button>
@@ -81,11 +81,20 @@
             show_add_popup = document.getElementById('show_add_popup');
             add_popup = document.getElementById('add_popup');
             search = document.getElementById('search');
+            let selected_add = 0
+            
+            show_add_popup.addEventListener('scroll', () => {
+                preventDefault
+                selected_add = 1
+                console.log(selected_add)
+            });
 
-            show_add_popup.onclick = () => {
+            show_add_popup.addEventListener('mouseenter', () => {
+                selected_add = 0
+
                 add_popup.classList.toggle('display_none');
-                show_add_popup.classList.toggle('remove_maxwidth');
-            }
+                    show_add_popup.classList.toggle('remove_maxwidth');
+            });
         </script>
     </div>
 </body>

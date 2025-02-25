@@ -173,10 +173,7 @@ input[type="range"]::-webkit-slider-thumb {
 .remove_maxwidth{
     width: auto !important;
 }
-#add_popup{
-    display: flex;
-    background-color: red;
-}
+
 .header{
     display: flex;
     align-items: center;
@@ -226,17 +223,40 @@ input[type="range"]::-webkit-slider-thumb {
         background-color: #313131;
         opacity: 0.5;
     }
+    #add_popup{
+        display: flex;
+        flex-direction: column;
+        margin: 0 6px;
+        gap: 6px;
 
+        height: 28px;
+    }
+    #show_img{
+        background-color: #FFFFFF3D;
+        border-radius: calc(var(--custom-border-radius) * 0.6);
+    }
     .btn{
         display: flex;
         align-items: center;
         justify-content: center;
+        gap: 12px;
+
         width: 40px;
         padding: 0;
         align-items: center;
+        opacity: 1 !important;
     }
     .btn.popup_action{
         position: relative;
+        width: initial;
+        background-color: #FFFFFF3D;
+        color: white;
+        font-size: 14px;
+
+        min-height: 28px !important;
+        padding: 0 12px;
+        border-radius: calc(var(--custom-border-radius) * 0.6);
+
         a{
             position: absolute;
             color: black;
